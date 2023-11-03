@@ -1,0 +1,15 @@
+Hệ thống Booking (đặt lịch tại quầy giao dịch) cho một Ngân Hàng ABC.
+
+Các chức năng chính của hệ thống:
+
+- Quản lý người dùng Bank Admin
+- Quản lý danh mục
+- Màn hình đặt lịch dành cho Khách hàng (sản phẩm, Thông tin KH,...)
+- Auto nhận dạng là KH ưu tiên hay không
+- Auto điều phối KH đến các giao dịch viên(GDV) đang trống
+- Có thể cấu hình cho GDV hỗ trợ KH những sản phẩm nào, để điều phối KH tương ứng
+- Trường hợp 1 GDV đang quá tải hệ thống tự điều phối cho GDV khác hỗ trợ KH
+- Có ticket theo dõi xuyên suốt quá trình GD của KH
+- Khi khách hàng đặt lịch hệ thống thông báo notification đến GDV tương ứng (Socket.IO, kafka,...)
+- Báo cáo thống kê GDV đã support bao nhiêu KH/ngày/tháng/năm
+- "Có ticket theo dõi xuyên suốt quá trình GD của KH" => Sau khi kết thúc ticket Khách háng có thể quay lại đánh giá ticket của mình đã được GDV support như thế nào
