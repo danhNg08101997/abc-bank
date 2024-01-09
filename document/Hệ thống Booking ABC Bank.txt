@@ -2,14 +2,25 @@ Hệ thống Booking (đặt lịch tại quầy giao dịch) cho một Ngân H�
 
 Các chức năng chính của hệ thống:
 
-- Quản lý người dùng Bank Admin
-- Quản lý danh mục
-- Màn hình đặt lịch dành cho Khách hàng (sản phẩm, Thông tin KH,...)
-- Auto nhận dạng là KH ưu tiên hay không
-- Auto điều phối KH đến các giao dịch viên(GDV) đang trống
-- Có thể cấu hình cho GDV hỗ trợ KH những sản phẩm nào, để điều phối KH tương ứng
-- Trường hợp 1 GDV đang quá tải hệ thống tự điều phối cho GDV khác hỗ trợ KH
-- Có ticket theo dõi xuyên suốt quá trình GD của KH
-- Khi khách hàng đặt lịch hệ thống thông báo notification đến GDV tương ứng (Socket.IO, kafka,...)
-- Báo cáo thống kê GDV đã support bao nhiêu KH/ngày/tháng/năm
-- "Có ticket theo dõi xuyên suốt quá trình GD của KH" => Sau khi kết thúc ticket Khách háng có thể quay lại đánh giá ticket của mình đã được GDV support như thế nào
+	- Quản lý người dùng Bank Admin
+	- Quản lý danh mục
+	- Màn hình đặt lịch dành cho Khách hàng (sản phẩm, Thông tin KH,...)
+	- Auto nhận dạng là KH ưu tiên hay không
+	- Auto điều phối KH đến các giao dịch viên(GDV) đang trống
+	- Có thể cấu hình cho GDV hỗ trợ KH những sản phẩm nào, để điều phối KH tương ứng
+	- Trường hợp 1 GDV đang quá tải hệ thống tự điều phối cho GDV khác hỗ trợ KH
+	- Có ticket theo dõi xuyên suốt quá trình GD của KH
+	- Khi khách hàng đặt lịch hệ thống thông báo notification đến GDV tương ứng (Socket.IO, kafka,...)
+	- Báo cáo thống kê GDV đã support bao nhiêu KH/ngày/tháng/năm
+	- "Có ticket theo dõi xuyên suốt quá trình GD của KH" => Sau khi kết thúc ticket Khách háng có thể quay lại đánh giá ticket của mình đã được GDV support như thế nào
+	
+Xây dựng hệ thống KIOS Banking:
+
+	1- Xây dựng giao diện trực quan thân thiện phù hợp khách hàng Gen Z
+	2- Giao diện nền có thể thay đổi theo các buổi trong ngày (Sáng, trưa, tối) và các ngày lễ đặc biệt (cho cấu hình ngày lễ).
+	3- Giao diện trang chủ show các chức năng như: đặt lịch, in sao kê, rút tiền mặt, mở thẻ tín dụng, vay tiền,...
+	4- Tính năng đọc QRCode từ Hệ thống booking (đề trước) -> Hiển thị thông tin -> nhấn nút xác nhận => Call Api đẩy thông tin vào Teller APP (Giả lập API nhận thông tin)
+	5- Xây dựng màn hình cho TV(1) hiển thị thông tin để khách hàng biết STT đến quầy nào.
+	6- Khi giao dịch viên hoàn thành công việc cho khách hàng. Có thao tác để GDV nhận khách hàng tiếp theo( Có âm thanh thông báo "Mời khách hàng số 222 đến quầy số 08), đồng thời trên màn hình TV(1) hiện thị số 222 quầy 08.
+	7- Tính năng đánh giá sự hài lòng của khách hàng (thái độ, chất lượng dịch vụ,...)
+	8- Tích hợp OCR quét CCCD -> query DB lấy thông tin khách hàng -> suggest cho Khách hàng các dịch vụ(đặt lịch, in sao kê, rút tiền mặt, mở thẻ tín dụng, vay tiền,...)
