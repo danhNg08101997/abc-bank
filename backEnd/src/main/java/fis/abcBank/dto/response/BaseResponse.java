@@ -41,4 +41,31 @@ public class BaseResponse {
     public void setTotalRecords(Integer totalRecords) {
         this.totalRecords = totalRecords;
     }
+    public BaseResponse() {
+        this.data = null;
+        this.errorDesc = null;
+        this.errorCode = null;
+    }
+
+    public BaseResponse(Object data) {
+        this.data = data;
+    }
+
+    public BaseResponse(String errorCode, String errorDesc) {
+        this.errorCode = errorCode;
+        this.errorDesc = errorDesc;
+    }
+
+    public BaseResponse(Object data, String errorCode, String errorDesc) {
+        this.data = data;
+        this.errorCode = errorCode;
+        this.errorDesc = errorDesc;
+    }
+
+    public BaseResponse(Object data, String errorCode, String errorDesc, Integer totalRecords) {
+        this.data = data;
+        this.errorCode = errorCode;
+        this.errorDesc = errorDesc;
+        this.totalRecords = totalRecords;
+    }
 }

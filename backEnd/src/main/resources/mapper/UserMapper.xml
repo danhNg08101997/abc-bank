@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="fis.abcBank.mapper.UserMapper">
-    <insert id="createUser" parameterType="fis.abcBank.dto.request.UserRequest">
+    <!--  Create  -->
+    <insert id="create" parameterType="fis.abcBank.dto.request.UserRequest">
         <![CDATA[
         insert
         into ABC_USER (
-            "username",
-            "user_password",
-            "user_role"
+            username,
+            user_password,
+            user_role
         )
         values (
                    #{username},
@@ -16,4 +17,59 @@
                )
         ]]>
     </insert>
+    <!--  Update  -->
+    <update id="update" parameterType="fis.abcBank.dto.request.UserRequest">
+        <![CDATA[
+            update ABC_USER
+            set username = #{username},
+                user_password = #{userPassword},
+                user_role = #{userRole}
+            where user_id = #{userId}
+        ]]>
+    </update>
+    <!--  Get all  -->
+    <select id="getUserList" parameterType="fis.abcBank.dto.request.UserRequest" resultType="fis.abcBank.dto.response.UserResponse">
+        select * from(
+        select
+                "rownum" as rnum,
+                "user_id" as userId,
+                "username" as username,
+                "user_password" as userPassword,
+                "user_role" as userRole
+        from ABC_USER
+        <where>
+                <if test="userId > 0">
+                    AND userId > 0
+                </if>
+                <if test="username != null and username !=''">
+                    AND UPPER(username) LIKE ('%' || UPPER(#{username}) ||'%')
+                </if>
+                <if test="userRole != null and userRole !=''">
+                    AND UPPER(userRole) LIKE ('%' || UPPER(#{userRole}) ||'%')
+                </if>
+        </where>
+        order by userId desc
+        )
+        <where>
+            <if test="pageSize > 0">
+                <![CDATA[AND RNUM BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
+            </if>
+        </where>
+    </select>
+    <select id="count"
+            parameterType="fis.abcBank.dto.request.UserRequest"
+            resultType="Integer">
+        <![CDATA[SELECT COUNT(*) FROM ABC_USER ]]>
+        <where>
+            <if test="userId != null">
+                and upper(userId) like('%' || upper(userId) ||'%')
+            </if>
+            <if test="username != null and username !=''">
+                AND UPPER(username) LIKE ('%' || UPPER(#{username}) ||'%')
+            </if>
+            <if test="userRole != null and userRole !=''">
+                AND UPPER(userRole) LIKE ('%' || UPPER(#{userRole}) ||'%')
+            </if>
+        </where>
+    </select>
 </mapper>
