@@ -29,4 +29,8 @@ public class UserController {
     public ResponseEntity<PagingResponse<UserResponse>>getAll(@RequestBody UserRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser(request));
     }
+    @PostMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BaseResponse> delete(@RequestBody UserRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(request));
+    }
 }

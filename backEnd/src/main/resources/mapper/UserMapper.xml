@@ -31,31 +31,33 @@
     <select id="getUserList" parameterType="fis.abcBank.dto.request.UserRequest" resultType="fis.abcBank.dto.response.UserResponse">
         SELECT *
         FROM (
+                 <![CDATA[
                  SELECT
-                     ROW_NUMBER() OVER (ORDER BY user_id DESC) as rnum,
-                        user_id as userId,
+                  ROW_NUMBER() OVER (ORDER BY user_id DESC) as rnum,
+--                      ROWNUM as rnum,
+                        user_id as userID,
                         username,
                         user_password as userPassword,
                         user_role as userRole
                  FROM ABC_USER
+                 ]]>
         <where>
-            <if test="userId > 0">
-                AND userId = #{userId}
+            <if test="userID != 0">
+                AND user_id = #{userID}
             </if>
-            <if test="username != null and username !=''">
-                AND UPPER(username) LIKE ('%' || UPPER(#{username}) ||'%')
+            <if test="username != null and username != ''">
+                <![CDATA[AND UPPER(username) LIKE CONCAT('%', UPPER(#{username}), '%')]]>
             </if>
-            <if test="userRole != null and userRole !=''">
-                AND UPPER(userRole) LIKE ('%' || UPPER(#{userRole}) ||'%')
+            <if test="userRole != null and userRole != ''">
+                <![CDATA[AND UPPER(user_role) LIKE CONCAT('%', UPPER(#{userRole}), '%')]]>
             </if>
         </where>
              ) as temp
         <where>
             <if test="pageSize > 0">
-                <![CDATA[AND rnum BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
+                <![CDATA[AND temp.rnum BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
             </if>
         </where>
---         WHERE temp.userId > 0
     </select>
         <!--  count row  -->
     <select id="count"
@@ -63,15 +65,18 @@
             resultType="Integer">
         <![CDATA[SELECT COUNT(*) FROM ABC_USER ]]>
         <where>
-            <if test="userId > 0">
-                AND userId = #{userId}
+            <if test="userID != 0">
+                AND user_id = #{userID}
             </if>
-            <if test="username != null and username !=''">
-                AND UPPER(username) LIKE ('%' || UPPER(#{username}) ||'%')
+            <if test="username != null and username != ''">
+                <![CDATA[AND UPPER(username) LIKE CONCAT('%', UPPER(#{username}), '%')]]>
             </if>
-            <if test="userRole != null and userRole !=''">
-                AND UPPER(userRole) LIKE ('%' || UPPER(#{userRole}) ||'%')
+            <if test="userRole != null and userRole != ''">
+                <![CDATA[AND UPPER(user_role) LIKE CONCAT('%', UPPER(#{userRole}), '%')]]>
             </if>
         </where>
     </select>
+    <delete id="delete" parameterType="fis.abcBank.dto.request.UserRequest">
+        <![CDATA[ DELETE FROM ABC_USER WHERE user_id = #{userID}]]>
+    </delete>
 </mapper>

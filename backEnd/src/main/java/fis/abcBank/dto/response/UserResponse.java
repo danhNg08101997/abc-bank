@@ -1,21 +1,20 @@
 package fis.abcBank.dto.response;
 
 public class UserResponse {
-    private int userId;
+    private int userID;
     private String username;
     private String userPassword;
     private String userRole;
 
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
     public String getUsername() {
         return username;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
     public void setUsername(String username) {
         this.username = username;

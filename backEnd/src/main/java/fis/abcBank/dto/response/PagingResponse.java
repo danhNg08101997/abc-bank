@@ -52,8 +52,10 @@ public PagingResponse() {
 //        this.content = page.getContent();
 //        this.totalElements = page.getTotalElements();
 //    }
-    public PagingResponse(List<T> content, long totalElements) {
+    public PagingResponse(List<T> content, long totalElements, String errorCode, String errorDesc) {
         this.content = content;
         this.totalElements = totalElements;
+        this.errorCode = errorCode;
+        this.errorDesc = errorDesc;
     }
 }

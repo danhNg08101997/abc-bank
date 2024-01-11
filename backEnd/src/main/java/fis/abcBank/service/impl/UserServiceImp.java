@@ -51,10 +51,23 @@ public class UserServiceImp implements UserService {
     @Override
     public PagingResponse<UserResponse> getAllUser(UserRequest request) {
         List<UserResponse>userList = userMapper.getUserList(request);
-        int countUser = 0;
+        int totalElements = 0;
         if(request.getPageNumber() > 0 && request.getPageSize() > 0){
-            countUser = userMapper.count(request);
+            totalElements = userMapper.count(request);
         }
-        return new PagingResponse<UserResponse>(userList, countUser);
+        return new PagingResponse<UserResponse>(userList, totalElements, String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.name());
+    }
+
+    @Override
+    public BaseResponse deleteUser(UserRequest request) {
+        if (request.getUserID() <= 0){
+            return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Tham số ID không hợp lệ");
+        }
+            int deleteCount = userMapper.delete(request);
+            if (deleteCount > 0){
+                return new BaseResponse(String.valueOf(HttpStatus.OK.value()), "Xóa thành công");
+            }
+
+        return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Xóa thất bại");
     }
 }

@@ -12,4 +12,5 @@ public interface UserMapper {
     int update(UserRequest request);
     int count(UserRequest request);
     List<UserResponse> getUserList(UserRequest request);
+    int delete(UserRequest request);
 }

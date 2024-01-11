@@ -9,4 +9,5 @@ public interface UserService {
     BaseResponse createUser(UserRequest request);
     BaseResponse updateUser(UserRequest request);
     PagingResponse<UserResponse> getAllUser(UserRequest request);
+    BaseResponse deleteUser(UserRequest request);
 }
