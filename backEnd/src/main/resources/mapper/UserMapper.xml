@@ -4,65 +4,67 @@
     <!--  Create  -->
     <insert id="create" parameterType="fis.abcBank.dto.request.UserRequest">
         <![CDATA[
-        insert
-        into ABC_USER (
-            username,
-            user_password,
-            user_role
-        )
-        values (
-                   #{username},
-                   #{userPassword},
-                   #{userRole}
-               )
+        INSERT
+            INTO ABC_USER (
+                username,
+                user_password,
+                user_role
+            )
+                VALUES (
+                #{username},
+                #{userPassword},
+                #{userRole}
+            )
         ]]>
     </insert>
     <!--  Update  -->
     <update id="update" parameterType="fis.abcBank.dto.request.UserRequest">
         <![CDATA[
-            update ABC_USER
-            set username = #{username},
+        UPDATE ABC_USER
+            SET username = #{username},
                 user_password = #{userPassword},
                 user_role = #{userRole}
-            where user_id = #{userId}
+        WHERE user_id = #{userId}
         ]]>
     </update>
     <!--  Get all  -->
     <select id="getUserList" parameterType="fis.abcBank.dto.request.UserRequest" resultType="fis.abcBank.dto.response.UserResponse">
-        select * from(
-        select
-                "rownum" as rnum,
-                "user_id" as userId,
-                "username" as username,
-                "user_password" as userPassword,
-                "user_role" as userRole
-        from ABC_USER
+        SELECT *
+        FROM (
+                 SELECT
+                     ROW_NUMBER() OVER (ORDER BY user_id DESC) as rnum,
+                        user_id as userId,
+                        username,
+                        user_password as userPassword,
+                        user_role as userRole
+                 FROM ABC_USER
         <where>
-                <if test="userId > 0">
-                    AND userId > 0
-                </if>
-                <if test="username != null and username !=''">
-                    AND UPPER(username) LIKE ('%' || UPPER(#{username}) ||'%')
-                </if>
-                <if test="userRole != null and userRole !=''">
-                    AND UPPER(userRole) LIKE ('%' || UPPER(#{userRole}) ||'%')
-                </if>
-        </where>
-        order by userId desc
-        )
-        <where>
-            <if test="pageSize > 0">
-                <![CDATA[AND RNUM BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
+            <if test="userId > 0">
+                AND userId = #{userId}
+            </if>
+            <if test="username != null and username !=''">
+                AND UPPER(username) LIKE ('%' || UPPER(#{username}) ||'%')
+            </if>
+            <if test="userRole != null and userRole !=''">
+                AND UPPER(userRole) LIKE ('%' || UPPER(#{userRole}) ||'%')
             </if>
         </where>
+             ) as temp
+        <where>
+            <if test="pageSize > 0">
+                <![CDATA[AND rnum BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
+            </if>
+        </where>
+--         WHERE temp.userId > 0
     </select>
+        <!--  count row  -->
     <select id="count"
             parameterType="fis.abcBank.dto.request.UserRequest"
             resultType="Integer">
         <![CDATA[SELECT COUNT(*) FROM ABC_USER ]]>
         <where>
-            <if test="userId != null">
-                and upper(userId) like('%' || upper(userId) ||'%')
+            <if test="userId > 0">
+                AND userId = #{userId}
             </if>
             <if test="username != null and username !=''">
                 AND UPPER(username) LIKE ('%' || UPPER(#{username}) ||'%')
