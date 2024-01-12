@@ -6,8 +6,8 @@ import fis.abcBank.dto.response.PagingResponse;
 import fis.abcBank.dto.response.UserResponse;
 
 public interface UserService {
-    BaseResponse createUser(UserRequest request);
-    BaseResponse updateUser(UserRequest request);
-    PagingResponse<UserResponse> getAllUser(UserRequest request);
-    BaseResponse deleteUser(UserRequest request);
+    BaseResponse createUser(UserRequest userRequest);
+    BaseResponse updateUser(UserRequest userRequest);
+    PagingResponse<UserResponse> getAllUser(UserRequest userRequest);
+    BaseResponse deleteUser(UserRequest userRequest);
 }

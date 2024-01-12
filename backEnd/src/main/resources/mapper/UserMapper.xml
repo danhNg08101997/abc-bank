@@ -34,7 +34,6 @@
                  <![CDATA[
                  SELECT
                   ROW_NUMBER() OVER (ORDER BY user_id DESC) as rnum,
---                      ROWNUM as rnum,
                         user_id as userID,
                         username,
                         user_password as userPassword,
@@ -43,7 +42,7 @@
                  ]]>
         <where>
             <if test="userID != 0">
-                AND user_id = #{userID}
+                <![CDATA[AND user_id = #{userID}]]>
             </if>
             <if test="username != null and username != ''">
                 <![CDATA[AND UPPER(username) LIKE CONCAT('%', UPPER(#{username}), '%')]]>
@@ -52,10 +51,10 @@
                 <![CDATA[AND UPPER(user_role) LIKE CONCAT('%', UPPER(#{userRole}), '%')]]>
             </if>
         </where>
-             ) as temp
+             ) as user
         <where>
             <if test="pageSize > 0">
-                <![CDATA[AND temp.rnum BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
+                <![CDATA[AND user.rnum BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
             </if>
         </where>
     </select>
@@ -66,7 +65,7 @@
         <![CDATA[SELECT COUNT(*) FROM ABC_USER ]]>
         <where>
             <if test="userID != 0">
-                AND user_id = #{userID}
+                <![CDATA[AND user_id = #{userID}]]>
             </if>
             <if test="username != null and username != ''">
                 <![CDATA[AND UPPER(username) LIKE CONCAT('%', UPPER(#{username}), '%')]]>
@@ -76,6 +75,7 @@
             </if>
         </where>
     </select>
+    <!--  Delete  -->
     <delete id="delete" parameterType="fis.abcBank.dto.request.UserRequest">
         <![CDATA[ DELETE FROM ABC_USER WHERE user_id = #{userID}]]>
     </delete>

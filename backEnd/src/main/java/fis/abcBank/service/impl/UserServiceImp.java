@@ -34,6 +34,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public BaseResponse updateUser(UserRequest userRequest) {
+        if (userRequest.getUserID() <= 0){
+            return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Tham số ID không hợp lệ");
+        }
         if(     userRequest.getUsername().isEmpty()  ||
                 userRequest.getUserPassword().isEmpty() ||
                 userRequest.getUserRole().isEmpty())
@@ -49,21 +52,21 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public PagingResponse<UserResponse> getAllUser(UserRequest request) {
-        List<UserResponse>userList = userMapper.getUserList(request);
+    public PagingResponse<UserResponse> getAllUser(UserRequest userRequest) {
+        List<UserResponse>userList = userMapper.getUserList(userRequest);
         int totalElements = 0;
-        if(request.getPageNumber() > 0 && request.getPageSize() > 0){
-            totalElements = userMapper.count(request);
+        if(userRequest.getPageNumber() > 0 && userRequest.getPageSize() > 0){
+            totalElements = userMapper.count(userRequest);
         }
         return new PagingResponse<UserResponse>(userList, totalElements, String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.name());
     }
 
     @Override
-    public BaseResponse deleteUser(UserRequest request) {
-        if (request.getUserID() <= 0){
+    public BaseResponse deleteUser(UserRequest userRequest) {
+        if (userRequest.getUserID() <= 0){
             return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Tham số ID không hợp lệ");
         }
-            int deleteCount = userMapper.delete(request);
+            int deleteCount = userMapper.delete(userRequest);
             if (deleteCount > 0){
                 return new BaseResponse(String.valueOf(HttpStatus.OK.value()), "Xóa thành công");
             }

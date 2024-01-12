@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fis.abcBank.mapper.ProductMapper">
+    <!--  Create  -->
+    <insert id="create" parameterType="fis.abcBank.dto.request.ProductRequest">
+        <![CDATA[
+        INSERT
+            INTO ABC_PRODUCT (
+                product_id,
+                product_name
+            )
+            VALUES (
+                #{productID},
+                #{productName}
+            )
+        ]]>
+    </insert>
+    <!--  Update  -->
+    <update id="update" parameterType="fis.abcBank.dto.request.ProductRequest">
+        <![CDATA[
+        UPDATE ABC_PRODUCT
+        SET product_name = #{productName}
+        WHERE product_id = #{productID}
+        ]]>
+    </update>
+    <!--  Delete  -->
+    <delete id="delete" parameterType="fis.abcBank.dto.request.ProductRequest">
+        <![CDATA[ DELETE FROM ABC_PRODUCT WHERE product_id = #{productID}]]>
+    </delete>
+    <!--  Get all  -->
+    <select id="getProductList" parameterType="fis.abcBank.dto.request.ProductRequest" resultType="fis.abcBank.dto.response.ProductResponse">
+        SELECT *
+        FROM (
+        <![CDATA[
+                 SELECT
+                  ROW_NUMBER() OVER (ORDER BY product_id DESC) as rnum,
+                        product_id as productID,
+                        product_name as productName
+                 FROM ABC_PRODUCT
+                 ]]>
+        <where>
+            <if test="productID != 0">
+                <![CDATA[AND product_id = #{productID}]]>
+            </if>
+            <if test="productName != null and productName != ''">
+                <![CDATA[AND UPPER(product_name) LIKE CONCAT('%', UPPER(#{productName}), '%')]]>
+            </if>
+        </where>
+        ) as product
+        <where>
+            <if test="pageSize > 0">
+                <![CDATA[AND product.rnum BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
+            </if>
+        </where>
+    </select>
+    <!--  count row  -->
+    <select id="count"
+            parameterType="fis.abcBank.dto.request.ProductRequest"
+            resultType="Integer">
+        <![CDATA[SELECT COUNT(*) FROM ABC_PRODUCT ]]>
+        <where>
+            <if test="productID != 0">
+                <![CDATA[AND product_id = #{productID}]]>
+            </if>
+            <if test="productName != null and productName != ''">
+                <![CDATA[AND UPPER(product_name) LIKE CONCAT('%', UPPER(#{productName}), '%')]]>
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -8,9 +8,9 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    int create(UserRequest request);
-    int update(UserRequest request);
-    int count(UserRequest request);
-    List<UserResponse> getUserList(UserRequest request);
-    int delete(UserRequest request);
+    int create(UserRequest userRequest);
+    int update(UserRequest userRequest);
+    int count(UserRequest userRequest);
+    List<UserResponse> getUserList(UserRequest userRequest);
+    int delete(UserRequest userRequest);
 }
