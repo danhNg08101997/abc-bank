@@ -15,4 +15,64 @@
                )
         ]]>
     </insert>
+    <!--  Update  -->
+    <update id="update" parameterType="fis.abcBank.dto.request.GDVRequest">
+        <![CDATA[
+        UPDATE ABC_GDV
+        SET gdv_name = #{gdvName},
+            gdv_available = #{gdvAvailable}
+        WHERE gdv_id = #{gdvID}
+        ]]>
+    </update>
+    <!--  Delete  -->
+    <delete id="delete" parameterType="fis.abcBank.dto.request.GDVRequest">
+        <![CDATA[ DELETE FROM ABC_GDV WHERE gdv_id = #{gdvID}]]>
+    </delete>
+    <!--  Get all  -->
+    <select id="getGDVList" parameterType="fis.abcBank.dto.request.GDVRequest" resultType="fis.abcBank.dto.response.GDVResponse">
+        SELECT *
+        FROM (
+        <![CDATA[
+                 SELECT
+                  ROW_NUMBER() OVER (ORDER BY gdv_id DESC) as rnum,
+                        gdv_id as gdvID,
+                        gdv_name as gdvName,
+                        gdv_available as gdvAvailable
+                 FROM ABC_GDV
+                 ]]>
+        <where>
+            <if test="gdvID != 0">
+                <![CDATA[AND gdv_id = #{gdvID}]]>
+            </if>
+            <if test="gdvName != null and gdvName != ''">
+                <![CDATA[AND UPPER(gdv_name) LIKE CONCAT('%', UPPER(#{gdvName}), '%')]]>
+            </if>
+            <if test="gdvAvailable = 1 or gdvAvailable = 0">
+                <![CDATA[AND gdv_available = #{gdvAvailable}]]>
+            </if>
+        </where>
+        ) as gdv
+        <where>
+            <if test="pageSize > 0">
+                <![CDATA[AND gdv.rnum BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
+            </if>
+        </where>
+    </select>
+    <!--  count row  -->
+    <select id="count"
+            parameterType="fis.abcBank.dto.request.GDVRequest"
+            resultType="Integer">
+        <![CDATA[SELECT COUNT(*) FROM ABC_GDV ]]>
+        <where>
+            <if test="gdvID != 0">
+                <![CDATA[AND gdv_id = #{gdvID}]]>
+            </if>
+            <if test="gdvName != null and gdvName != ''">
+                <![CDATA[AND UPPER(gdv_name) LIKE CONCAT('%', UPPER(#{gdvName}), '%')]]>
+            </if>
+            <if test="gdvAvailable = 1 or gdvAvailable = 0">
+                <![CDATA[AND gdv_available = #{gdvAvailable}]]>
+            </if>
+        </where>
+    </select>
 </mapper>
