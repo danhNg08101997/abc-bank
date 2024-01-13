@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fis.abcBank.mapper.GDVMapper">
+    <!--  Create  -->
+    <insert id="create" parameterType="fis.abcBank.dto.request.GDVRequest">
+        <![CDATA[
+        INSERT
+        INTO ABC_GDV (
+            gdv_name,
+            gdv_available
+        )
+        VALUES (
+                   #{gdvName},
+                   #{gdvAvailable}
+               )
+        ]]>
+    </insert>
+</mapper>
