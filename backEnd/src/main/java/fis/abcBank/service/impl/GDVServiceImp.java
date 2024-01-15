@@ -4,7 +4,6 @@ import fis.abcBank.dto.request.GDVRequest;
 import fis.abcBank.dto.response.BaseResponse;
 import fis.abcBank.dto.response.GDVResponse;
 import fis.abcBank.dto.response.PagingResponse;
-import fis.abcBank.dto.response.ProductResponse;
 import fis.abcBank.mapper.GDVMapper;
 import fis.abcBank.service.GDVService;
 import org.springframework.beans.factory.annotation.Autowired;

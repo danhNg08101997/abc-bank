@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fis.abcBank.mapper.CustomerMapper">
+    <!--  Create  -->
+    <insert id="create" parameterType="fis.abcBank.dto.request.CustomerRequest">
+        <![CDATA[
+        INSERT
+        INTO ABC_CUSTOMER (
+            customer_name
+        )
+        VALUES (
+                   #{customerName}
+               )
+        ]]>
+    </insert>
+    <!--  Update  -->
+    <update id="update" parameterType="fis.abcBank.dto.request.CustomerRequest">
+        <![CDATA[
+        UPDATE ABC_CUSTOMER
+        SET customer_name = #{customerName}
+        WHERE customer_id = #{customerID}
+        ]]>
+    </update>
+    <!--  Delete  -->
+    <delete id="delete" parameterType="fis.abcBank.dto.request.CustomerRequest">
+        <![CDATA[ DELETE FROM ABC_CUSTOMER WHERE customer_id = #{customerID}]]>
+    </delete>
+    <!--  Get all  -->
+    <select id="getCustomerList" parameterType="fis.abcBank.dto.request.CustomerRequest" resultType="fis.abcBank.dto.response.CustomerResponse">
+        SELECT *
+        FROM (
+        <![CDATA[
+                 SELECT
+                  ROW_NUMBER() OVER (ORDER BY customer_id DESC) as rnum,
+                        customer_id as customerID,
+                        customer_name as customerName
+                 FROM ABC_CUSTOMER
+                 ]]>
+        <where>
+            <if test="customerID != 0">
+                <![CDATA[AND customer_id = #{customerID}]]>
+            </if>
+            <if test="customerName != null and customerName != ''">
+                <![CDATA[AND UPPER(customer_name) LIKE CONCAT('%', UPPER(#{customerName}), '%')]]>
+            </if>
+        </where>
+        ) as customer
+        <where>
+            <if test="pageSize > 0">
+                <![CDATA[AND customer.rnum BETWEEN (#{pageSize} * (#{pageNumber} - 1) + 1) AND (#{pageSize} * #{pageNumber})]]>
+            </if>
+        </where>
+    </select>
+    <!--  count row  -->
+    <select id="count"
+            parameterType="fis.abcBank.dto.request.CustomerRequest"
+            resultType="Integer">
+        <![CDATA[SELECT COUNT(*) FROM ABC_CUSTOMER ]]>
+        <where>
+            <if test="customerID != 0">
+                <![CDATA[AND customer_id = #{customerID}]]>
+            </if>
+            <if test="customerName != null and customerName != ''">
+                <![CDATA[AND UPPER(customer_name) LIKE CONCAT('%', UPPER(#{customerName}), '%')]]>
+            </if>
+        </where>
+    </select>
+</mapper>
