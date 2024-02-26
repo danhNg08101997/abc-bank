@@ -2,11 +2,9 @@ package fis.abcBank.controller;
 
 import fis.abcBank.constant.APIConstant;
 import fis.abcBank.dto.request.GDVRequest;
-import fis.abcBank.dto.request.ProductRequest;
 import fis.abcBank.dto.response.BaseResponse;
 import fis.abcBank.dto.response.GDVResponse;
 import fis.abcBank.dto.response.PagingResponse;
-import fis.abcBank.dto.response.ProductResponse;
 import fis.abcBank.service.GDVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
