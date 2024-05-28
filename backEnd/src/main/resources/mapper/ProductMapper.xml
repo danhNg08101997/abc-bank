@@ -7,11 +7,15 @@
         INSERT
             INTO ABC_PRODUCT (
                 product_id,
-                product_name
+                product_name,
+                product_code,
+                product_createDate
             )
             VALUES (
                 #{productID},
-                #{productName}
+                #{productName},
+                #{productCode},
+                NOW()
             )
         ]]>
     </insert>
@@ -19,7 +23,10 @@
     <update id="update" parameterType="fis.abcBank.dto.request.ProductRequest">
         <![CDATA[
         UPDATE ABC_PRODUCT
-        SET product_name = #{productName}
+        SET
+            product_name = #{productName},
+            product_updateDate = NOW()
+
         WHERE product_id = #{productID}
         ]]>
     </update>
@@ -35,7 +42,10 @@
                  SELECT
                   ROW_NUMBER() OVER (ORDER BY product_id DESC) as rnum,
                         product_id as productID,
-                        product_name as productName
+                        product_name as productName,
+                        product_code as productCode,
+                        product_createDate as productCreateDate,
+                        product_updateDate as productUpdateDate
                  FROM ABC_PRODUCT
                  ]]>
         <where>
@@ -44,6 +54,9 @@
             </if>
             <if test="productName != null and productName != ''">
                 <![CDATA[AND UPPER(product_name) LIKE CONCAT('%', UPPER(#{productName}), '%')]]>
+            </if>
+            <if test="productCode != null and productCode != ''">
+                <![CDATA[AND UPPER(product_code) LIKE CONCAT('%', UPPER(#{productCode}), '%')]]>
             </if>
         </where>
         ) as product
@@ -64,6 +77,9 @@
             </if>
             <if test="productName != null and productName != ''">
                 <![CDATA[AND UPPER(product_name) LIKE CONCAT('%', UPPER(#{productName}), '%')]]>
+            </if>
+            <if test="productCode != null and productCode != ''">
+                <![CDATA[AND UPPER(product_code) LIKE CONCAT('%', UPPER(#{productCode}), '%')]]>
             </if>
         </where>
     </select>

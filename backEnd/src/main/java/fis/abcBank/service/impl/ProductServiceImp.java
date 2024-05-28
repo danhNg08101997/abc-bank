@@ -6,6 +6,7 @@ import fis.abcBank.dto.response.PagingResponse;
 import fis.abcBank.dto.response.ProductResponse;
 import fis.abcBank.mapper.ProductMapper;
 import fis.abcBank.service.ProductService;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,11 @@ public class ProductServiceImp implements ProductService {
     ProductMapper productMapper;
     @Override
     public BaseResponse createProduct(ProductRequest productRequest) {
-        if (productRequest.getProductName().isEmpty()){
-            return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Tham số bắt buộc không được để trống");
+        if (productRequest.getProductName() == null || productRequest.getProductName().isEmpty()){
+            return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Tên sản phẩm không được để trống");
+        }
+        if (productRequest.getProductCode() == null || productRequest.getProductCode().isEmpty()){
+            return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Mã sản phẩm không được để trống");
         }
         int countCreate = productMapper.create(productRequest);
         if (countCreate > 0){
@@ -34,7 +38,7 @@ public class ProductServiceImp implements ProductService {
             return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Tham số ID không hợp lệ");
         }
         if (productRequest.getProductName().isEmpty()){
-            return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Tham số bắt buộc không được để trống");
+            return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Tên sản phẩm không được để trống");
         }
         int countUpdate = productMapper.update(productRequest);
         if (countUpdate > 0){
