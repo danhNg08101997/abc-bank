@@ -1,6 +1,6 @@
 package fis.abcBank.dto.response;
 
-public class CustomerResponse {
+public class CustomerResponse extends BaseDTO {
     private int customerID;
     private String customerName;
     private int customerPriority;
