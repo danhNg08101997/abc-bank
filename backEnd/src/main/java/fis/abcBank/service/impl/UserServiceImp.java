@@ -9,6 +9,7 @@ import fis.abcBank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import com.google.common.base.Strings;
 
 import java.util.List;
 
@@ -18,15 +19,13 @@ public class UserServiceImp implements UserService {
     UserMapper userMapper;
     @Override
     public BaseResponse createUser(UserRequest userRequest) {
-        if(     userRequest.getUsername().isEmpty()  ||
-                userRequest.getUserPassword().isEmpty() ||
-                userRequest.getUserRole().isEmpty())
+        if( userRequest == null || Strings.isNullOrEmpty(userRequest.getUsername()) || Strings.isNullOrEmpty(userRequest.getUserPassword()) || Strings.isNullOrEmpty(userRequest.getUserRole()) )
         {
-            return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()),"Tham số bắt buộc không được trống");
+            return new BaseResponse( String.valueOf(HttpStatus.BAD_REQUEST.value() ),"Tham số bắt buộc không được trống");
         }
 //        Khởi tạo dữ liệu
         int countCreate = userMapper.create(userRequest);
-        if (countCreate > 0){
+        if (countCreate > 0) {
             return new BaseResponse(String.valueOf(HttpStatus.OK.value()),"Tạo mới thành công");
         }
         return new BaseResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Tạo mới thất bại");
