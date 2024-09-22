@@ -10,11 +10,11 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/dashboard',
+        redirectTo: '/home',
         pathMatch: 'full',
       },
       {
-        path: 'dashboard',
+        path: 'home',
         loadChildren: () =>
           import('./pages/pages.module').then((m) => m.PagesModule),
       }
